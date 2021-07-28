@@ -15,6 +15,5 @@ public class ErrorResponse {
     private Integer code;
     private String message;
     private List<String> errors;
-    private String path;
 
 }
