@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.Min;
 
+/**
+ * A change account balance data transfer object
+ */
 @Data
 @RequiredArgsConstructor
 public class ChangeBalanceDto {

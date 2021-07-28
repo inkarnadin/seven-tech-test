@@ -8,6 +8,9 @@ import ru.alarh.seventech.domain.Account;
 import ru.alarh.seventech.exception.NegativeBalanceException;
 import ru.alarh.seventech.repository.AccountRepository;
 
+/**
+ * Account business logic implementation class
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -15,6 +18,15 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
 
+    /**
+     * Account balance change method.
+     * If there are enough funds on the account, the balance change operation
+     * is performed else will be thrown {@link NegativeBalanceException}
+     *
+     * @param accountNumber unique number of account
+     * @param amount balance change amount
+     * @return actual balance value
+     */
     @Override
     @SneakyThrows
     public double changeMoneyBalance(String accountNumber, Double amount) {
@@ -32,6 +44,18 @@ public class AccountServiceImpl implements AccountService {
         return newBalance;
     }
 
+    /**
+     * Method of transferring money from one account to another.
+     * The method transfers funds from one account to another,
+     * provided that there are enough funds on the sender's account. If the
+     * transfer is not feasible, the operation is not carried out.
+     *
+     * If there are not enough funds on the account will be thrown {@link NegativeBalanceException}
+     *
+     * @param sender number of sender account
+     * @param recipient number of recipient account
+     * @param amount transfer amount
+     */
     @Override
     @SneakyThrows
     public void transferMoneyBetweenAccounts(String sender, String recipient, Double amount) {

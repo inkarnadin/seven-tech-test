@@ -14,10 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class for handling errors when executing requests.
+ */
 @Slf4j
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
+    /**
+     * Exception handling method for invalid input parameters
+     *
+     * @param e input exception
+     * @return error response body
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
@@ -36,6 +45,12 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Exception handling method for negative account balance
+     *
+     * @param e input exception
+     * @return error response body
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NegativeBalanceException.class)
     public ResponseEntity<ErrorResponse> handleNegativeBalance(NegativeBalanceException e) {
@@ -47,19 +62,6 @@ public class ControllerExceptionHandler {
 
         log.warn("Error during request: {}", response);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler({NullPointerException.class})
-    public ResponseEntity<ErrorResponse> handleInternalServerException() {
-        ErrorResponse response = new ErrorResponse();
-        response.setTimestamp(LocalDateTime.now());
-        response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        response.setMessage("Unknown server error");
-        response.setErrors(new ArrayList<>());
-
-        log.warn("Error during request: {}", response);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

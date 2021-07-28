@@ -15,6 +15,9 @@ import ru.alarh.seventech.service.AccountService;
 
 import javax.validation.Valid;
 
+/**
+ * Endpoints of interaction with accounts
+ */
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -23,6 +26,12 @@ public class AccountController {
 
     private final AccountService accountService;
 
+    /**
+     * Put money into account
+     *
+     * @param changeBalance request body
+     * @return response
+     */
     @SneakyThrows
     @PostMapping(path = "/replenish")
     public ResponseEntity<?> replenish(@Valid @RequestBody ChangeBalanceDto changeBalance) {
@@ -32,6 +41,12 @@ public class AccountController {
         return ResponseEntity.ok(new CurrentBalanceDto(changeBalance.getAccountNumber(), currentBalance));
     }
 
+    /**
+     * Withdraw money from the account
+     *
+     * @param changeBalance request body
+     * @return response
+     */
     @SneakyThrows
     @PostMapping(path = "/withdraw")
     public ResponseEntity<?> withdraw(@Valid @RequestBody ChangeBalanceDto changeBalance) {
@@ -41,6 +56,12 @@ public class AccountController {
         return ResponseEntity.ok(new CurrentBalanceDto(changeBalance.getAccountNumber(), currentBalance));
     }
 
+    /**
+     * Transfer money between accounts
+     *
+     * @param moneyTransfer request body
+     * @return response
+     */
     @SneakyThrows
     @PostMapping(path = "/transfer")
     public ResponseEntity<?> transfer(@Valid @RequestBody MoneyTransferDto moneyTransfer) {
