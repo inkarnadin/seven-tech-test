@@ -5,9 +5,12 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.alarh.seventech.domain.Account;
+import ru.alarh.seventech.exception.MissingAccountException;
 import ru.alarh.seventech.exception.NegativeBalanceException;
 import ru.alarh.seventech.exception.SameAccountCollisionException;
 import ru.alarh.seventech.repository.AccountRepository;
+
+import java.util.Objects;
 
 /**
  * Account business logic implementation class
@@ -34,6 +37,9 @@ public class AccountServiceImpl implements AccountService {
         log.info("Changing balance. Account number: {}, amount: {}", accountNumber, amount);
 
         Account currentAccount = accountRepository.findByAccountNumber(accountNumber);
+
+        if (Objects.isNull(currentAccount))
+            throw new MissingAccountException("Account is missing: " + accountNumber);
 
         double newBalance = currentAccount.changeBalance(amount).doubleValue();
         if (newBalance < 0)

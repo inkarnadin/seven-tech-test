@@ -52,7 +52,7 @@ public class ControllerExceptionHandler {
      * @return error response body
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({NegativeBalanceException.class, SameAccountCollisionException.class})
+    @ExceptionHandler({NegativeBalanceException.class, SameAccountCollisionException.class, MissingAccountException.class})
     public ResponseEntity<ErrorResponse> handleBusinessLogic(Exception e) {
         ErrorResponse response = new ErrorResponse();
         response.setTimestamp(LocalDateTime.now());
