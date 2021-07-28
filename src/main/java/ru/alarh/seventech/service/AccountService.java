@@ -4,7 +4,7 @@ import ru.alarh.seventech.exception.NegativeBalanceException;
 
 public interface AccountService {
 
-    double changeBalance(String accountNumber, Double amount) throws NegativeBalanceException;
-    boolean transfer(String sender, String recipient, Double amount) throws NegativeBalanceException;
+    double changeMoneyBalance(String accountNumber, Double amount) throws NegativeBalanceException;
+    void transferMoneyBetweenAccounts(String sender, String recipient, Double amount) throws NegativeBalanceException;
 
 }

@@ -2,13 +2,13 @@ package ru.alarh.seventech.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.alarh.seventech.domain.Account;
 import ru.alarh.seventech.exception.NegativeBalanceException;
 import ru.alarh.seventech.repository.AccountRepository;
 
-import java.math.BigDecimal;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
@@ -17,7 +17,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @SneakyThrows
-    public double changeBalance(String accountNumber, Double amount) {
+    public double changeMoneyBalance(String accountNumber, Double amount) {
+        log.info("Changing balance. Account number: {}, amount: {}", accountNumber, amount);
+
         Account currentAccount = accountRepository.findByAccountNumber(accountNumber);
 
         double newBalance = currentAccount.changeBalance(amount).doubleValue();
@@ -26,16 +28,19 @@ public class AccountServiceImpl implements AccountService {
 
         accountRepository.save(currentAccount);
 
+        log.info("Balance was changed. Account number: {}, currentBalance: {}", accountNumber, newBalance);
         return newBalance;
     }
 
     @Override
     @SneakyThrows
-    public boolean transfer(String sender, String recipient, Double amount) {
-        changeBalance(sender, -1 * amount);
-        changeBalance(recipient, amount);
+    public void transferMoneyBetweenAccounts(String sender, String recipient, Double amount) {
+        log.info("Transfer money between two accounts. Sender: {}, recipient: {}, amount: {}", sender, recipient, amount);
 
-        return true;
+        changeMoneyBalance(sender, -1 * amount);
+        changeMoneyBalance(recipient, amount);
+
+        log.info("Transfer was success");
     }
 
 }
