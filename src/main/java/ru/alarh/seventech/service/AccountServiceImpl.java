@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.alarh.seventech.domain.Account;
 import ru.alarh.seventech.exception.NegativeBalanceException;
+import ru.alarh.seventech.exception.SameAccountCollisionException;
 import ru.alarh.seventech.repository.AccountRepository;
 
 /**
@@ -51,6 +52,7 @@ public class AccountServiceImpl implements AccountService {
      * transfer is not feasible, the operation is not carried out.
      *
      * If there are not enough funds on the account will be thrown {@link NegativeBalanceException}
+     * If the sender's account is the same as the recipient's account {@link SameAccountCollisionException}
      *
      * @param sender number of sender account
      * @param recipient number of recipient account
@@ -60,6 +62,9 @@ public class AccountServiceImpl implements AccountService {
     @SneakyThrows
     public void transferMoneyBetweenAccounts(String sender, String recipient, Double amount) {
         log.info("Transfer money between two accounts. Sender: {}, recipient: {}, amount: {}", sender, recipient, amount);
+
+        if (sender.equals(recipient))
+            throw new SameAccountCollisionException("Accounts for transfer must be different");
 
         changeMoneyBalance(sender, -1 * amount);
         changeMoneyBalance(recipient, amount);

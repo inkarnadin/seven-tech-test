@@ -46,14 +46,14 @@ public class ControllerExceptionHandler {
     }
 
     /**
-     * Exception handling method for negative account balance
+     * Exception handling method for custom business logic
      *
      * @param e input exception
      * @return error response body
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NegativeBalanceException.class)
-    public ResponseEntity<ErrorResponse> handleNegativeBalance(NegativeBalanceException e) {
+    @ExceptionHandler({NegativeBalanceException.class, SameAccountCollisionException.class})
+    public ResponseEntity<ErrorResponse> handleBusinessLogic(Exception e) {
         ErrorResponse response = new ErrorResponse();
         response.setTimestamp(LocalDateTime.now());
         response.setCode(HttpStatus.BAD_REQUEST.value());
